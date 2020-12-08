@@ -9,7 +9,7 @@ app_name = 'webInterface'
 urlpatterns = [
     url(r'^$', views.simple_upload, name='upload_file'),
     url(r'show_upload_files', views.show_upload_files, name='show_upload_files'),
-    path(r'get_file_content/<str:name>', views.get_file_content, name='get_file_content'),
+    path(r'get_file_content/(?P<id>\d+)/$', views.get_file_content, name='get_file_content'),
 
 ]
 if settings.DEBUG:

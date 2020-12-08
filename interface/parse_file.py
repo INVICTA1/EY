@@ -4,7 +4,7 @@ from .mysqlConnector import insert_request_in_database
 from enum import Enum
 import xlrd
 
-def get_data_from_database(file_id):
+def get_sheet_data_by_file_id(file_id):
     request = 'select * from sheet where file_id = {0};'.format(file_id)
     rows = insert_request_in_database(request)
     return rows

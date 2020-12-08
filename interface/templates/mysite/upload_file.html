@@ -26,11 +26,14 @@
     <table border="1">
         {% for file in list_file %}
         <tr>
+            <td>{{file.id}}</td>
             <td>
-                <a href="{% url 'interface:get_file_content' name=file.name %}" target="_blank">{{file.name}}</a>
+                <a href="{% url 'interface:get_file_content' id=file.id %}" target="_blank">{{file.name}}</a>
             </td>
+
             <td>
                 {{file.uploaded_at}}
+
             </td>
         </tr>
         {% endfor %}

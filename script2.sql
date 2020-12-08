@@ -6,7 +6,7 @@ USE `ey`;
 
 
 create table `file`(file_id int primary key ,
-						file_name varchar(20),
+						file_name varchar(100),
                         upload_datetime datetime);
 
 create table `sheet` (bank_account int  NOT NULL,
@@ -20,4 +20,3 @@ create table `sheet` (bank_account int  NOT NULL,
 						file_id int,
                         constraint `file_sheet`
                         foreign key (file_id) references `file`(file_id) on delete cascade on update cascade);
-

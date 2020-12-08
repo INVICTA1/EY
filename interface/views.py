@@ -6,7 +6,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from datetime import timedelta
 
 from interface.models import File
-from .parse_file import insert_data_in_database, get_data_from_database
+from .parse_file import insert_data_in_database, get_sheet_data_by_file_id
 
 
 # Create your views here.
@@ -38,12 +38,10 @@ def show_upload_files(request):
         return render(request, 'mysite/upload_file.html', {'list_file': list_file})
 
 
-def get_file_content(request, name):
-    print('get_file_content')
+def get_file_content(request, id):
     if request.method == 'GET':
         files = File.objects.all()
         for file in files:
-            if file.name == name:
-                file_id = file.id
-                rows = get_data_from_database(file_id)
+            if file.id == int(id):
+                rows = get_sheet_data_by_file_id(int(id))
                 return render(request, 'mysite/index.html',{'rows':rows})
