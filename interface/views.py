@@ -5,28 +5,21 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from datetime import timedelta
 
-from interface.models import File,Row
-from .parse_file import parse_file
+from interface.models import File
+from .parse_file import insert_data_in_database, get_data_from_database
+
 
 # Create your views here.
 def simple_upload(request):
     try:
         if request.method == 'POST' and request.FILES['file']:
             newfile = File()
-            row = Row()
             myfile = request.FILES['file']
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)  # сохранили файл в папку
             newfile.name = filename
-            rows_excel = parse_file('excel_files/' + myfile.name)
             newfile.save()
-            for row_excel in rows_excel:
-                row.file_id = newfile
-                row.bank_account,row.incoming_saldo_asset,row.incoming_saldo_liabilities,row.turnover_credit,\
-                row.turnover_debit,row.outgoing_saldo_asset,row.outgoing_saldo_liabilities,row.class_type =row_excel[0]
-                row.save()
-
-
+            insert_data_in_database('excel_files/' + myfile.name, newfile.id)
     except BaseException as e:
         print(e)
     return render(request, 'mysite/home.html')
@@ -45,16 +38,12 @@ def show_upload_files(request):
         return render(request, 'mysite/upload_file.html', {'list_file': list_file})
 
 
-def get_file_content(request,name):
+def get_file_content(request, name):
     print('get_file_content')
     if request.method == 'GET':
         files = File.objects.all()
         for file in files:
-            a= file.details.values_list('bank_account',flat=True)
             if file.name == name:
-                pass
-
-        return  render(request, 'mysite/index.html')
-
-
-
+                file_id = file.id
+                rows = get_data_from_database(file_id)
+                return render(request, 'mysite/index.html',{'rows':rows})

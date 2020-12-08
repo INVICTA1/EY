@@ -5,6 +5,32 @@
     <title>Title</title>
 </head>
 <body>
+<div><a href="/">Home</a>
+    <a href="{% url 'interface:show_upload_files' %}">Showfiles</a>
+
+</div>
+<table border="1">
+    <tr>
+        <th>bank_account</th>
+        <th>incoming_saldo_asset</th>
+        <th> incoming_saldo_liabilities</th>
+        <th> turnover_credit</th>
+        <th> turnover_debit</th>
+        <th>outgoing_saldo_asset</th>
+        <th>outgoing_saldo_liabilities</th>
+        <th> class_type</th>
+        <th> file_id</th>
+
+    </tr>
+    {% for row in rows %}
+    <tr>
+        {% for value in row %}
+        <td> {{value}}</td>
+        {% endfor %}
+
+    </tr>
+    {% endfor %}
+</table>
 
 </body>
 </html>
